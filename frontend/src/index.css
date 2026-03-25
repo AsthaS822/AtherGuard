@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  body {
+    @apply font-inter bg-background-light text-gray-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-dark-bg text-dark-text;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-sora font-semibold;
+  }
+}
+
+@layer components {
+
+  .glass-card {
+    @apply bg-white dark:bg-[rgba(255,255,255,0.05)] border border-gray-200 dark:border-[rgba(255,255,255,0.1)] rounded-[20px] p-6 shadow-sm backdrop-blur-[20px];
+  }
+
+  .nav-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-primary-accent/10 hover:text-primary-accent transition;
+  }
+
+  .nav-link.active {
+    @apply bg-primary-accent text-white;
+  }
+
+  /* Custom Glow Buttons */
+  .glow-btn {
+    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-primary-accent text-white active:scale-95 flex items-center justify-center gap-2;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  }
+
+  .glow-btn:hover {
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+  }
+
+  .glow-btn-cyan {
+    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-primary-glow text-dark-bg active:scale-95 flex items-center justify-center gap-2;
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+  }
+
+  .glow-btn-cyan:hover {
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+  }
+
+  .premium-glow {
+    box-shadow: 0 0 40px rgba(188, 19, 254, 0.15);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400/20 rounded-full hover:bg-gray-400/40 transition-colors;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-white/10 hover:bg-white/20;
+}
