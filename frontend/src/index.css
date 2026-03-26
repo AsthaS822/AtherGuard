@@ -5,62 +5,76 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-main: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-dim: #94A3B8;
+    --border-main: rgba(0, 0, 0, 0.08);
+    --border-dim: rgba(0, 0, 0, 0.04);
+    --primary: #7C3AED;
+    --primary-glow: rgba(124, 58, 237, 0.3);
+    --accent: #00F5FF;
+    --accent-glow: rgba(0, 245, 255, 0.3);
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.5);
+  }
+
+  .dark {
+    --bg-main: #070B14;
+    --bg-surface: #0B0F19;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-dim: #64748B;
+    --border-main: rgba(255, 255, 255, 0.1);
+    --border-dim: rgba(255, 255, 255, 0.05);
+    --primary: #7C3AED;
+    --primary-glow: rgba(124, 58, 237, 0.4);
+    --accent: #00F5FF;
+    --accent-glow: rgba(0, 245, 255, 0.4);
+    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    --glass-bg: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
 
   body {
-    @apply font-inter bg-background-light text-gray-900 transition-colors duration-300;
+    @apply font-inter antialiased transition-colors duration-300;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
   }
-
-  .dark body {
-    @apply bg-dark-bg text-dark-text;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-sora font-semibold;
-  }
-}
-
-@layer components {
 
   .glass-card {
-    @apply bg-white dark:bg-[rgba(255,255,255,0.05)] border border-gray-200 dark:border-[rgba(255,255,255,0.1)] rounded-[20px] p-6 shadow-sm backdrop-blur-[20px];
+    @apply backdrop-blur-xl transition-all duration-300;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow);
   }
 
-  .nav-link {
-    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-primary-accent/10 hover:text-primary-accent transition;
+  .glow-button-primary {
+    @apply bg-primary text-white font-bold py-3 px-8 rounded-xl transition-all duration-300;
+    box-shadow: 0 0 20px var(--primary-glow);
   }
 
-  .nav-link.active {
-    @apply bg-primary-accent text-white;
+  .glow-button-primary:hover {
+    @apply scale-[1.02];
+    box-shadow: 0 0 30px var(--primary-glow);
   }
 
-  /* Custom Glow Buttons */
-  .glow-btn {
-    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-primary-accent text-white active:scale-95 flex items-center justify-center gap-2;
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  .glow-button-secondary {
+    @apply bg-bg-surface text-text-primary border border-border-main font-bold py-3 px-8 rounded-xl transition-all duration-300;
   }
 
-  .glow-btn:hover {
-    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+  .glow-button-secondary:hover {
+    @apply bg-bg-main scale-[1.02];
+    border-color: var(--primary-glow);
   }
 
-  .glow-btn-cyan {
-    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 bg-primary-glow text-dark-bg active:scale-95 flex items-center justify-center gap-2;
-    box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
-  }
-
-  .glow-btn-cyan:hover {
-    box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
-  }
-
-  .premium-glow {
-    box-shadow: 0 0 40px rgba(188, 19, 254, 0.15);
-  }
 }
+
+
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

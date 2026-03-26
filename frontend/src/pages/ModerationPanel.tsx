@@ -8,9 +8,11 @@ import {
     Clock,
     ExternalLink
 } from 'lucide-react';
-import GlassCard from '../components/GlassCard';
-import GlowButton from '../components/GlowButton';
+import GlassCard from '../components/ui/GlassCard';
+import GlowButton from '../components/ui/GlowButton';
 import { motion, AnimatePresence } from 'framer-motion';
+
+
 
 const mockComments = [
     {
@@ -77,9 +79,10 @@ const ModerationPanel: React.FC = () => {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold font-sora text-gray-900 dark:text-white">Live Moderation Feed</h2>
-                    <p className="text-gray-500 dark:text-gray-300 mt-1">Real-time analysis of incoming content across your platforms.</p>
+                    <h2 className="text-3xl font-bold font-sora text-text-primary">Live Moderation Feed</h2>
+                    <p className="text-text-secondary mt-1">Real-time analysis of incoming content across your platforms.</p>
                 </div>
+
                 <div className="flex gap-3">
                     <GlowButton variant="outline" className="text-sm">
                         <Clock size={16} /> History
@@ -103,20 +106,22 @@ const ModerationPanel: React.FC = () => {
                             >
                                 <GlassCard className={`relative overflow-hidden transition-colors duration-500 ${comment.status === 'approved' ? 'border-green-500/30' : comment.status === 'hidden' ? 'border-red-500/30 opacity-60' : comment.status === 'pending' && comment.toxicity > 0.8 ? 'border-red-500/30' : ''}`}>
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                                            <User className="text-gray-400" size={24} />
+                                        <div className="w-12 h-12 rounded-full bg-bg-surface border border-border-main flex items-center justify-center shrink-0">
+                                            <User className="text-text-dim" size={24} />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="font-bold text-lg text-gray-900 dark:text-white">{comment.user}</span>
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">• {comment.timestamp}</span>
+                                                    <span className="font-bold text-lg text-text-primary">{comment.user}</span>
+                                                    <span className="text-xs text-text-secondary">• {comment.timestamp}</span>
                                                 </div>
+
                                                 <div className={`px-3 py-1 rounded-full text-xs font-bold border ${getScoreColor(comment.toxicity).replace('text-', 'bg-').replace('500', '500/10')} ${getScoreColor(comment.toxicity)} border-current/10`}>
                                                     AI Score: {(comment.toxicity * 100).toFixed(0)}%
                                                 </div>
                                             </div>
-                                            <p className="text-gray-300 mb-4 leading-relaxed">{comment.text}</p>
+                                            <p className="text-text-secondary mb-4 leading-relaxed">{comment.text}</p>
+
 
                                             <div className="flex flex-wrap items-center gap-3">
                                                 {comment.status === 'pending' || comment.status === 'flagged' ? (
@@ -156,13 +161,14 @@ const ModerationPanel: React.FC = () => {
                     <GlassCard>
                         <h3 className="text-xl font-bold font-sora mb-4">AI Insight</h3>
                         <div className="space-y-4">
-                            <div className="p-4 rounded-xl bg-primary-accent/10 border border-primary-accent/20">
+                            <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <ShieldAlert className="text-primary-accent" size={20} />
-                                    <span className="font-bold text-gray-900 dark:text-white">Active Shielding</span>
+                                    <ShieldAlert className="text-primary" size={20} />
+                                    <span className="font-bold text-text-primary">Active Shielding</span>
                                 </div>
-                                <p className="text-sm text-gray-500 dark:text-gray-300">Moderating comments with &gt;85% confidence score automatically.</p>
+                                <p className="text-sm text-text-secondary">Moderating comments with &gt;85% confidence score automatically.</p>
                             </div>
+
 
                             <div className="space-y-3 pt-2">
                                 <div className="flex justify-between text-sm">

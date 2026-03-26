@@ -1,87 +1,128 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import bgImage from "../assets/wallpaper.png";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Mail, Lock, ArrowRight, Github, UserPlus, LogIn } from 'lucide-react';
+import GlowButton from '../components/ui/GlowButton';
+import { useNavigate } from 'react-router-dom';
 
-const Login: React.FC = () => {
-    return (
-        <div
-            className="min-h-screen bg-cover bg-center flex items-center justify-center relative overflow-hidden"
-            style={{ backgroundImage: `url(${bgImage})` }}
-        >
-            {/* Dark overlay for better readability */}
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+interface LoginProps {
+  onLogin: () => void;
+}
 
-            {/* Login card with glassmorphism */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative backdrop-blur-xl bg-white/5 dark:bg-black/20 p-10 rounded-2xl w-full max-w-md border border-white/20 shadow-2xl text-white mx-4"
-            >
-                <div className="text-center mb-8">
-                    <h2 className="text-4xl font-bold font-sora mb-2 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-                        Welcome Back
-                    </h2>
-                    <p className="text-gray-300">Sign in to AetherGuard Shield</p>
-                </div>
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
+  const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-                <form className="space-y-6">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Email Address</label>
-                        <input
-                            type="email"
-                            placeholder="e.g. admin@aetherguard.ai"
-                            className="w-full p-3.5 rounded-xl bg-white/10 border border-white/20 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-primary-accent/50 transition-all"
-                        />
-                    </div>
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onLogin();
+    navigate("/onboarding");
+  };
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Password</label>
-                        <input
-                            type="password"
-                            placeholder="••••••••"
-                            className="w-full p-3.5 rounded-xl bg-white/10 border border-white/20 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-primary-accent/50 transition-all"
-                        />
-                    </div>
+  return (
+    <div className="min-h-screen bg-bgLight dark:bg-bgDark text-gray-900 dark:text-white flex items-center justify-center p-6 relative overflow-hidden transition-colors duration-500">
+      
+      {/* Cinematic Background */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary-glow/5 blur-[120px] rounded-full pointer-events-none" />
 
-                    <div className="flex justify-between items-center text-sm">
-                        <label className="flex items-center cursor-pointer group">
-                            <input type="checkbox" className="mr-2 rounded border-white/20 bg-white/10 text-primary-accent focus:ring-primary-accent/50" />
-                            <span className="text-gray-300 group-hover:text-white transition-colors">Remember me</span>
-                        </label>
-
-                        <a href="#" className="text-primary-glow hover:underline transition-all">
-                            Forgot password?
-                        </a>
-                    </div>
-
-                    <Link
-                        to="/app/dashboard"
-                        className="w-full block text-center bg-primary-accent hover:bg-primary-accent/90 py-3.5 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(124,58,237,0.4)] hover:shadow-[0_0_25px_rgba(124,58,237,0.6)] transform active:scale-[0.98] transition-all"
-                    >
-                        Sign In
-                    </Link>
-
-                </form>
-
-                <div className="mt-8 pt-6 border-t border-white/10 text-center">
-                    <p className="text-gray-400 text-sm">
-                        Don't have an account?{" "}
-                        <span className="text-primary-glow cursor-pointer hover:underline font-bold">
-                            Create Account
-                        </span>
-                    </p>
-                </div>
-
-                <Link to="/" className="mt-6 block text-center text-gray-500 hover:text-white text-xs transition-colors">
-                    ← Back to Landing
-                </Link>
-
-            </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-lg z-10"
+      >
+        <div className="text-center mb-10">
+            <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(124,58,237,0.4)]">
+                <Shield size={28} className="text-white" />
+            </div>
+            <h1 className="text-4xl font-black font-sora tracking-tighter mb-2 uppercase italic">
+                Nexus <span className="text-primary">Auth</span>
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest text-[9px]">Secure Gateway to AetherGuard Intelligence</p>
         </div>
-    );
-};
 
-import { motion } from 'framer-motion';
+        <div className="bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-2 backdrop-blur-3xl shadow-2xl relative overflow-hidden mb-8">
+            <div className="flex p-1 gap-1">
+                <button 
+                  onClick={() => setActiveTab('login')}
+                  className={`flex-1 py-4 rounded-3xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'login' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-gray-600 dark:hover:text-white'}`}
+                >
+                    <LogIn size={16} /> Login
+                </button>
+                <button 
+                  onClick={() => setActiveTab('signup')}
+                  className={`flex-1 py-4 rounded-3xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'signup' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-gray-600 dark:hover:text-white'}`}
+                >
+                    <UserPlus size={16} /> Sign Up
+                </button>
+            </div>
+        </div>
+
+        <div className="bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-10 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="space-y-6"
+                    >
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Neural Identity</label>
+                            <div className="relative">
+                                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <input 
+                                    type="email" 
+                                    placeholder="user@aether.ai" 
+                                    className="w-full bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-2xl py-5 pl-16 pr-6 focus:outline-none focus:border-primary/50 transition-all font-medium"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Access Key</label>
+                            <div className="relative">
+                                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <input 
+                                    type="password" 
+                                    placeholder="••••••••" 
+                                    className="w-full bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-2xl py-5 pl-16 pr-6 focus:outline-none focus:border-primary/50 transition-all font-medium"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
+
+                <GlowButton type="submit" className="w-full py-6 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 mt-4">
+                    {activeTab === 'login' ? 'Unlock Portal' : 'Initialize Identity'} <ArrowRight size={18} />
+                </GlowButton>
+            </form>
+
+            <div className="mt-10 pt-10 border-t border-gray-100 dark:border-white/5 relative z-10">
+                <p className="text-center text-[10px] font-black uppercase tracking-widest text-gray-400 mb-6">Or Authenticate via</p>
+                <div className="grid grid-cols-2 gap-4">
+                    <button className="flex items-center justify-center gap-3 py-4 rounded-2xl border border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-all text-sm font-bold">
+                        <Github size={20} /> GitHub
+                    </button>
+                    <button className="flex items-center justify-center gap-3 py-4 rounded-2xl border border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-all text-sm font-bold">
+                        <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-[10px] font-black">G</div> Google
+                    </button>
+                </div>
+            </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 export default Login;

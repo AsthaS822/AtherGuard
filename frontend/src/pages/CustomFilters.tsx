@@ -1,141 +1,138 @@
-import React, { useState } from 'react';
-import { Plus, X, Shield, ShieldOff, AlertTriangle, Search } from 'lucide-react';
-import GlassCard from '../components/GlassCard';
-import GlowButton from '../components/GlowButton';
+import { useState } from 'react';
+import GlassCard from '../components/ui/GlassCard';
+import GlowButton from '../components/ui/GlowButton';
+import { Plus, X, Shield, Ban, Ghost, Languages } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const CustomFilters: React.FC = () => {
-    const [words, setWords] = useState(['hate', 'toxic', 'spam', 'aggressive', 'violent']);
-    const [newWord, setNewWord] = useState('');
-    const [strictMode, setStrictMode] = useState(true);
+const CustomFilters = () => {
+  const [bannedWords, setBannedWords] = useState(['crypto', 'free', 'giveaway', 'hack', 'dm me']);
+  const [inputValue, setInputValue] = useState('');
+  const [isStrict, setIsStrict] = useState(true);
 
-    const addWord = () => {
-        if (newWord.trim() && !words.includes(newWord.trim().toLowerCase())) {
-            setWords([...words, newWord.trim().toLowerCase()]);
-            setNewWord('');
-        }
-    };
+  const addWord = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputValue && !bannedWords.includes(inputValue)) {
+      setBannedWords([...bannedWords, inputValue]);
+      setInputValue('');
+    }
+  };
 
-    const removeWord = (word: string) => {
-        setWords(words.filter(w => w !== word));
-    };
+  const removeWord = (word: string) => {
+    setBannedWords(bannedWords.filter(w => w !== word));
+  };
 
-    return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+  return (
+    <div className="space-y-10 max-w-5xl">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-4xl md:text-5xl font-black font-sora text-white tracking-tighter uppercase italic">
+            Neural <span className="text-primary">Filters</span>
+        </h1>
+        <p className="text-gray-400 font-medium uppercase tracking-tight text-sm">Define banned patterns and enable strict moderation protocols.</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Strict Mode Toggle */}
+        <GlassCard className={`lg:col-span-3 p-8 border-2 transition-all duration-500 ${isStrict ? 'border-primary shadow-[0_0_30px_rgba(124,58,237,0.2)] bg-primary/5' : 'border-white/5 bg-white/[0.02]'}`}>
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="flex items-center gap-6">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-colors ${isStrict ? 'bg-primary text-white shadow-glow' : 'bg-white/5 text-gray-500'}`}>
+                        <Shield size={32} />
+                    </div>
+                    <div>
+                        <h3 className="text-2xl font-black font-sora uppercase tracking-tight">Vanguard Strict Mode</h3>
+                        <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">AI Agent will automatically flag all questionable content without human oversight.</p>
+                    </div>
+                </div>
+                <div 
+                    className={`w-20 h-10 rounded-full p-2 cursor-pointer transition-colors relative ${isStrict ? 'bg-primary' : 'bg-gray-600'}`}
+                    onClick={() => setIsStrict(!isStrict)}
+                >
+                    <motion.div 
+                        animate={{ x: isStrict ? 40 : 0 }}
+                        className="w-6 h-6 bg-white rounded-full shadow-lg" 
+                    />
+                </div>
+            </div>
+        </GlassCard>
+
+        {/* Banned Words Management */}
+        <GlassCard className="lg:col-span-2 p-10 space-y-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500">
+              <Ban size={24} />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-sora uppercase tracking-tight">Manual Pattern Blacklist</h3>
+              <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Static keywords the AI will always incinerate.</p>
+            </div>
+          </div>
+
+          <form onSubmit={addWord} className="flex gap-4">
+            <input 
+              type="text" 
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Add banned pattern (e.g. 'scam')"
+              className="flex-1 bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-red-500/50 transition-all text-white font-medium"
+            />
+            <GlowButton type="submit" className="px-8 rounded-2xl bg-red-500/80 hover:bg-red-500 flex items-center gap-2 text-xs font-black uppercase tracking-widest">
+              <Plus size={20} /> Inject
+            </GlowButton>
+          </form>
+
+          <div className="flex flex-wrap gap-3">
+            <AnimatePresence>
+              {bannedWords.map((word) => (
+                <motion.span 
+                  key={word}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group hover:border-red-500 transition-all"
+                >
+                  {word}
+                  <X 
+                    size={14} 
+                    className="cursor-pointer hover:text-white transition-colors" 
+                    onClick={() => removeWord(word)}
+                  />
+                </motion.span>
+              ))}
+            </AnimatePresence>
+          </div>
+        </GlassCard>
+
+        {/* Language Filters */}
+        <GlassCard className="p-10 space-y-8">
+            <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-primary-glow/10 flex items-center justify-center text-primary-glow">
+                <Languages size={24} />
+                </div>
                 <div>
-                    <h2 className="text-3xl font-bold font-sora text-gray-900 dark:text-white">Custom Word Filters</h2>
-                    <p className="text-gray-500 dark:text-gray-300 mt-1">Define specific keywords and phrases for the AI to prioritize.</p>
-                </div>
-                <div className="flex items-center gap-4 bg-white/5 p-1 rounded-2xl border border-white/10">
-                    <button
-                        onClick={() => setStrictMode(false)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${!strictMode ? 'bg-white/10 text-white shadow-lg' : 'text-gray-400 hover:text-gray-200'}`}
-                    >
-                        <ShieldOff size={16} /> Standard
-                    </button>
-                    <button
-                        onClick={() => setStrictMode(true)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${strictMode ? 'bg-primary-accent text-white shadow-[0_0_15px_rgba(124,58,237,0.4)]' : 'text-gray-400 hover:text-gray-200'}`}
-                    >
-                        <Shield size={16} /> Strict Mode
-                    </button>
+                <h3 className="text-xl font-black font-sora uppercase tracking-tight">Linguistic Focus</h3>
+                <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Filter specific language types.</p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-6">
-                    <GlassCard>
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="flex-1 relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input
-                                    type="text"
-                                    value={newWord}
-                                    onChange={(e) => setNewWord(e.target.value)}
-                                    onKeyDown={(e) => e.key === 'Enter' && addWord()}
-                                    placeholder="Add a new forbidden word..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-primary-glow/50 focus:bg-white/10 transition-all"
-                                />
-                            </div>
-                            <GlowButton onClick={addWord} variant="cyan" className="py-3 px-8">
-                                <Plus size={20} /> Add Word
-                            </GlowButton>
+            <div className="space-y-4">
+                {['English (Global)', 'Hindi (Beta)', 'Mixed Hinglish'].map((lang, i) => (
+                    <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-all group">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">{lang}</span>
+                        <div className={`w-4 h-4 rounded-full border-2 border-primary-glow flex items-center justify-center`}>
+                            {i === 0 && <div className="w-2 h-2 rounded-full bg-primary-glow" /> }
                         </div>
-
-                        <div className="flex flex-wrap gap-3">
-                            <AnimatePresence>
-                                {words.map((word) => (
-                                    <motion.div
-                                        key={word}
-                                        initial={{ scale: 0.8, opacity: 0 }}
-                                        animate={{ scale: 1, opacity: 1 }}
-                                        exit={{ scale: 0.8, opacity: 0 }}
-                                        className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl group hover:border-red-500/50 hover:bg-red-500/5 transition-all"
-                                    >
-                                        <span className="font-medium">{word}</span>
-                                        <button
-                                            onClick={() => removeWord(word)}
-                                            className="text-gray-500 hover:text-red-500 transition-colors"
-                                        >
-                                            <X size={14} />
-                                        </button>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                            {words.length === 0 && (
-                                <div className="w-full py-12 text-center text-gray-500">
-                                    <p>No custom words added yet. Start by typing a word above.</p>
-                                </div>
-                            )}
-                        </div>
-                    </GlassCard>
-
-                    <GlassCard className="bg-yellow-500/5 border-yellow-500/20">
-                        <div className="flex gap-4">
-                            <div className="p-3 rounded-full bg-yellow-500/20 text-yellow-500 shrink-0 h-fit">
-                                <AlertTriangle size={24} />
-                            </div>
-                            <div>
-                                <h4 className="text-lg font-bold font-sora mb-1 text-yellow-500">Caution: Over-filtering</h4>
-                                <p className="text-sm text-gray-400 leading-relaxed">
-                                    Adding too many common words can lead to higher false-positive rates. Use specific terms that are consistently harmful in your community context.
-                                </p>
-                            </div>
-                        </div>
-                    </GlassCard>
-                </div>
-
-                <div className="space-y-6">
-                    <GlassCard>
-                        <h3 className="text-xl font-bold font-sora mb-4 text-gray-900 dark:text-white">Filter Stats</h3>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10">
-                                <span className="text-sm text-gray-500 dark:text-gray-300">Total Banned Words</span>
-                                <span className="text-xl font-bold text-gray-900 dark:text-white">{words.length}</span>
-                            </div>
-                            <div className="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/10">
-                                <span className="text-sm text-gray-400">Matches Today</span>
-                                <span className="text-xl font-bold text-red-400">142</span>
-                            </div>
-                            <div className="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/10">
-                                <span className="text-sm text-gray-400">Auto-Delete</span>
-                                <span className="text-sm font-bold text-green-400">ENABLED</span>
-                            </div>
-                        </div>
-                    </GlassCard>
-
-                    <GlassCard className="bg-primary-glow/5 border-primary-glow/20">
-                        <h3 className="text-xl font-bold font-sora mb-2 text-primary-glow">AI Context</h3>
-                        <p className="text-sm text-gray-400 mb-4">
-                            Our AI doesn't just look for words, it looks for <strong>intent</strong>. Even if a word isn't in your list, the AI will still detect harmful sentiment.
-                        </p>
-                        <GlowButton variant="outline" className="w-full">How it works</GlowButton>
-                    </GlassCard>
-                </div>
+                    </div>
+                ))}
             </div>
-        </div>
-    );
+
+            <div className="pt-4 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-gray-500 italic">
+                <Ghost size={14} className="text-primary-glow" /> 24/7 Deep Learning Enabled
+            </div>
+        </GlassCard>
+      </div>
+    </div>
+  );
 };
 
 export default CustomFilters;

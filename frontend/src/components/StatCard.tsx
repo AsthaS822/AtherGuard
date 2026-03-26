@@ -23,11 +23,13 @@ const StatCard: React.FC<StatCardProps> = ({
         <GlassCard delay={delay} className="flex-1 min-w-[240px]">
             <div className="flex items-start justify-between">
                 <div>
-                    <p className="text-gray-500 dark:text-gray-300 text-sm font-medium mb-1">{title}</p>
-                    <h3 className="text-3xl font-bold font-sora text-gray-900 dark:text-white">{value}</h3>
+                    <p className="text-text-secondary text-sm font-medium mb-1">{title}</p>
+                    <h3 className="text-3xl font-bold font-sora text-text-primary">{value}</h3>
+
 
                     {trend !== undefined && (
-                        <div className={`flex items-center gap-1 mt-2 text-sm font-medium ${trend > 0 ? 'text-green-500 dark:text-green-400' : trend < 0 ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                        <div className={`flex items-center gap-1 mt-2 text-sm font-medium ${trend > 0 ? 'text-green-500' : trend < 0 ? 'text-red-500' : 'text-text-dim'}`}>
+
                             {trend > 0 ? <ArrowUpRight size={16} /> : trend < 0 ? <ArrowDownRight size={16} /> : <Minus size={16} />}
                             <span>{Math.abs(trend)}% from last week</span>
                         </div>

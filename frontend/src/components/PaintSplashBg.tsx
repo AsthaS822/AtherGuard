@@ -1,9 +1,8 @@
 import React from 'react';
-import paintSplashVideo from '../animations/purplepaintsplash.mp4';
 
 /**
  * Full-screen purple paint splash video background.
- * Video source: src/animations/purplepaintsplash.mp4
+ * Video source: public/videos/purplepaintsplash.mp4
  */
 const PaintSplashBg: React.FC = () => {
     return (
@@ -20,18 +19,7 @@ const PaintSplashBg: React.FC = () => {
                 }}
             />
 
-            {/* Purple paint-splash video from src/animations/purplepaintsplash.mp4 */}
-            <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-screen"
-            >
-                <source src={paintSplashVideo} type="video/mp4" />
-            </video>
-
-            {/* Dark overlay to keep text readable */}
+            {/* REMOVE VIDEO — keep only gradient */}
             <div className="absolute inset-0 bg-black/55" />
         </div>
     );

@@ -11,32 +11,39 @@ export default {
         inter: ["Inter", "sans-serif"],
         sora: ["Sora", "sans-serif"],
       },
-
       colors: {
-        background: {
-          light: "#f8fafc",
-          dark: "#0a0a0f"
+        bg: {
+          main: "var(--bg-main)",
+          surface: "var(--bg-surface)",
         },
-
-        dark: {
-          bg: "#0a0a0f",
-          card: "rgba(255, 255, 255, 0.05)",
-          border: "rgba(255, 255, 255, 0.1)",
-          text: "#E5E7EB"
+        text: {
+          primary: "var(--text-primary)",
+          secondary: "var(--text-secondary)",
+          dim: "var(--text-dim)",
         },
-
+        border: {
+          main: "var(--border-main)",
+          dim: "var(--border-dim)",
+        },
         primary: {
-          DEFAULT: "#7c3aed",
-          accent: "#7c3aed",
-          glow: "#00f5ff",
-          neon: "#bc13fe"
+          DEFAULT: "var(--primary)",
+          glow: "var(--primary-glow)",
         },
-        secondary: {
-          DEFAULT: "#00f5ff"
+        accent: {
+          DEFAULT: "var(--accent)",
+          glow: "var(--accent-glow)",
         },
-        darkBg: {
-          DEFAULT: "#0a0a0f"
-        }
+      },
+
+      boxShadow: {
+        glow: "0 0 30px rgba(124,58,237,0.4)",
+        neon: "0 0 20px rgba(0,245,255,0.5)"
+      },
+      backdropBlur: {
+        xl: "20px"
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       }
     },
   },
