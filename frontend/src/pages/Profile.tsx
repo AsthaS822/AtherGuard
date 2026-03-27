@@ -1,113 +1,180 @@
-import React from 'react';
-import GlassCard from '../components/ui/GlassCard';
-import StatCard from '../components/ui/StatCard';
-import { User, Activity, ShieldCheck, Mail, Calendar, Briefcase, Zap, Clock } from 'lucide-react';
+import React, { useState, useContext, useEffect } from "react";
+import { User as UserIcon, Mail, Upload, Save, LogOut } from "lucide-react";
+import GlassCard from "../components/ui/GlassCard";
+import GlowButton from "../components/ui/GlowButton";
+import { ThemeToggle } from "../components/ui/ThemeToggle";
+import { AuthContext } from "../context/AuthContext";
+import { logout } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const Profile: React.FC = () => {
+  const auth = useContext(AuthContext);
+  const user = auth?.user;
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.displayName || user.email?.split('@')[0] || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
+
+  const handleSave = async () => {
+    setLoading(true);
+    // 🔗 API call logic here if needed for extended profile data
+    await new Promise((res) => setTimeout(res, 1000));
+    setLoading(false);
+    alert("Profile changes simulated!");
+  };
+
+  const handleLogout = async () => {
+    try {
+        await logout();
+        localStorage.clear();
+        navigate("/");
+    } catch (err) {
+        console.error("Logout failed:", err);
+    }
+  };
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <div className="relative h-48 rounded-3xl bg-gradient-to-r from-primary/30 to-glow/20 border border-white/10 overflow-hidden">
-        <div className="absolute inset-0 bg-white/5 backdrop-blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-full p-8 flex items-end gap-6 z-10">
-          <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-primary to-purple-600 border-4 border-dark-bg shadow-glow flex items-center justify-center text-white text-4xl font-bold">
-            AR
-          </div>
-          <div className="mb-2">
-            <h1 className="text-4xl font-bold font-sora text-white">Alex Rivera</h1>
-            <p className="text-primary-glow font-bold tracking-widest uppercase text-xs flex items-center gap-2 mt-1">
-              <ShieldCheck size={14} />
-              Lead Administrator
-            </p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-bg-main text-[var(--text-primary)] p-6 md:p-10">
+      
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-3xl font-black tracking-tight font-sora uppercase italic text-[var(--text-primary)]">
+          Profile <span className="text-[var(--accent-primary)]">Settings</span>
+        </h1>
+        <ThemeToggle />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-        <div className="space-y-6">
-          <GlassCard className="space-y-6">
-            <h3 className="text-lg font-bold font-sora flex items-center gap-2">
-              <User size={18} className="text-primary-glow" />
-              User Information
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm">
-                <Mail size={16} className="text-gray-500" />
-                <span className="text-gray-400">Email:</span>
-                <span className="text-white font-medium">alex@aetherguard.ai</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Briefcase size={16} className="text-gray-500" />
-                <span className="text-gray-400">Role:</span>
-                <span className="text-white font-medium">System Admin</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Calendar size={16} className="text-gray-500" />
-                <span className="text-gray-400">Joined:</span>
-                <span className="text-white font-medium">Jan 2026</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Clock size={16} className="text-gray-500" />
-                <span className="text-gray-400">Timezone:</span>
-                <span className="text-white font-medium">UTC -5 (EST)</span>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* LEFT: PROFILE CARD */}
+        <GlassCard className="p-6 flex flex-col items-center text-center border-[var(--border-dim)] bg-[var(--bg-surface)]">
+          <div className="relative mb-4">
+            <div className="w-24 h-24 rounded-full bg-[var(--bg-elevated)] flex items-center justify-center border border-[var(--border-dim)] overflow-hidden">
+              {avatar ? (
+                <img src={avatar} className="w-full h-full object-cover" alt="Avatar" />
+              ) : (
+                <UserIcon size={40} className="text-[var(--text-secondary)]" />
+              )}
             </div>
-          </GlassCard>
 
-          <GlassCard className="space-y-4">
-            <h3 className="text-lg font-bold font-sora flex items-center gap-2">
-                <Zap size={18} className="text-primary-glow" />
-                Core Stats
-            </h3>
-            <div className="space-y-4">
-               <div>
-                  <div className="flex justify-between text-xs mb-1">
-                     <span className="text-gray-500 font-bold">ACCURACY</span>
-                     <span className="text-primary-glow font-bold">99.4%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                     <div className="h-full bg-primary w-[99.4%]" />
-                  </div>
-               </div>
-               <div>
-                  <div className="flex justify-between text-xs mb-1">
-                     <span className="text-gray-500 font-bold">EFFICIENCY</span>
-                     <span className="text-glow font-bold">92.1%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                     <div className="h-full bg-glow w-[92.1%]" />
-                  </div>
-               </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        <div className="md:col-span-2 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-             <StatCard title="Total Actions" value="1,420" icon={<Activity size={20} />} />
-             <StatCard title="Moderation Efficiency" value="98.2%" icon={<ShieldCheck size={20} />} trend={{ value: 1.5, isUp: true }} />
+            <label className="absolute bottom-0 right-0 bg-[var(--accent-primary)] p-2 rounded-full cursor-pointer shadow-glow">
+              <Upload size={14} className="text-white" />
+              <input
+                type="file"
+                hidden
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setAvatar(URL.createObjectURL(file));
+                }}
+              />
+            </label>
           </div>
 
-          <GlassCard className="space-y-6 flex-1">
-             <h3 className="text-lg font-bold font-sora flex items-center gap-2">
-                <Activity size={18} className="text-primary-glow" />
-                Recent Activity Log
-             </h3>
-             <div className="space-y-6 relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-px before:bg-white/10">
-                {[
-                  { action: 'Updated Settings', target: 'AI Sensitivity changed to 80%', time: '2 hours ago' },
-                  { action: 'Added Filter', target: 'Added word "trash" to global list', time: '5 hours ago' },
-                  { action: 'Resolved Spike', target: 'Moderation spike on YouTube v/2841', time: '1 day ago' },
-                  { action: 'Exported Data', target: 'Weekly report March 12-19 exported', time: '2 days ago' }
-                ].map((log, i) => (
-                  <div key={i} className="relative pl-8">
-                     <div className="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-dark-bg border-2 border-primary-glow shadow-neon z-10"></div>
-                     <p className="text-sm font-bold text-white">{log.action}</p>
-                     <p className="text-xs text-gray-400 mt-1">{log.target}</p>
-                     <p className="text-[10px] text-gray-600 font-bold uppercase mt-1">{log.time}</p>
-                  </div>
-                ))}
-             </div>
+          <h2 className="text-xl font-bold text-[var(--text-primary)]">{name}</h2>
+          <p className="text-[var(--text-secondary)] text-sm">{email}</p>
+        </GlassCard>
+
+        {/* RIGHT: SETTINGS */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* BASIC INFO */}
+          <GlassCard className="p-6 border-[var(--border-dim)] bg-[var(--bg-surface)]">
+            <h3 className="text-lg font-bold mb-4 text-[var(--text-primary)]">Basic Information</h3>
+
+            <div className="space-y-4">
+              
+              <div>
+                <label className="text-sm text-[var(--text-secondary)] mb-1 block">
+                  Full Name
+                </label>
+                <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border-dim)] rounded-xl px-3 py-2">
+                  <UserIcon size={16} className="text-[var(--text-secondary)]" />
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="bg-transparent outline-none w-full text-[var(--text-primary)]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm text-[var(--text-secondary)] mb-1 block">
+                  Email
+                </label>
+                <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border-dim)] rounded-xl px-3 py-2">
+                  <Mail size={16} className="text-[var(--text-secondary)]" />
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-transparent outline-none w-full text-[var(--text-primary)]"
+                  />
+                </div>
+              </div>
+
+            </div>
           </GlassCard>
+
+          {/* PREFERENCES */}
+          <GlassCard className="p-6 border-[var(--border-dim)] bg-[var(--bg-surface)]">
+            <h3 className="text-lg font-bold mb-4 text-[var(--text-primary)]">Preferences</h3>
+
+            <div className="space-y-6">
+              
+              {/* AI Sensitivity */}
+              <div>
+                <label className="text-sm text-[var(--text-secondary)] block mb-2">
+                  AI Moderation Sensitivity
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  className="w-full accent-[var(--accent-primary)]"
+                />
+                <p className="text-xs text-[var(--text-secondary)] mt-1">
+                  Higher = stricter moderation
+                </p>
+              </div>
+
+              {/* Theme */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-[var(--text-secondary)]">
+                  Theme Appearance
+                </span>
+                <ThemeToggle />
+              </div>
+
+            </div>
+          </GlassCard>
+
+          {/* ACTIONS */}
+          <GlassCard className="p-6 flex flex-col md:flex-row justify-between items-center gap-4 border-[var(--border-dim)] bg-[var(--bg-surface)]">
+            <GlowButton
+              onClick={handleSave}
+              className="flex items-center gap-2 px-8 py-3"
+            >
+              <Save size={18} />
+              {loading ? "Saving..." : "Save Changes"}
+            </GlowButton>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-red-500 hover:opacity-80 font-bold transition-all"
+            >
+              <LogOut size={18} />
+              Logout Session
+            </button>
+          </GlassCard>
+
         </div>
       </div>
     </div>

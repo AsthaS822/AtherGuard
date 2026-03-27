@@ -2,11 +2,16 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MagneticCursor } from '../ui/MagneticCursor';
+
+
 
 const MainLayout = () => {
 
   return (
-    <div className="flex min-h-screen bg-bg-main text-text-primary transition-colors duration-500 overflow-hidden">
+    <div className="flex min-h-screen bg-bg text-text transition-colors duration-500 overflow-hidden">
+      <MagneticCursor />
+
 
       <Sidebar />
       <div className="flex-1 flex flex-col md:ml-64 h-screen overflow-y-auto custom-scrollbar relative">

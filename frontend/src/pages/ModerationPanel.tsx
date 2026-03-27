@@ -71,7 +71,7 @@ const ModerationPanel: React.FC = () => {
 
     const getScoreColor = (score: number) => {
         if (score > 0.8) return 'text-red-500';
-        if (score > 0.5) return 'text-yellow-500';
+        if (score > 0.5) return 'text-[var(--accent-primary)]';
         return 'text-green-500';
     };
 
@@ -79,9 +79,10 @@ const ModerationPanel: React.FC = () => {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold font-sora text-text-primary">Live Moderation Feed</h2>
-                    <p className="text-text-secondary mt-1">Real-time analysis of incoming content across your platforms.</p>
+                    <h2 className="text-3xl font-black font-sora text-[var(--text-primary)] uppercase tracking-tighter italic">Live Moderation <span className="text-[var(--accent-primary)] underline decoration-[var(--accent-primary)]/20">Feed</span></h2>
+                    <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm mt-1">Real-time analysis of incoming content across your platforms.</p>
                 </div>
+
 
                 <div className="flex gap-3">
                     <GlowButton variant="outline" className="text-sm">
@@ -104,23 +105,26 @@ const ModerationPanel: React.FC = () => {
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ delay: index * 0.1 }}
                             >
-                                <GlassCard className={`relative overflow-hidden transition-colors duration-500 ${comment.status === 'approved' ? 'border-green-500/30' : comment.status === 'hidden' ? 'border-red-500/30 opacity-60' : comment.status === 'pending' && comment.toxicity > 0.8 ? 'border-red-500/30' : ''}`}>
+                                <GlassCard className={`relative overflow-hidden transition-colors duration-500 border-[var(--border-dim)] bg-[var(--bg-surface)] ${comment.status === 'approved' ? 'border-green-500/30' : comment.status === 'hidden' ? 'border-red-500/30 opacity-60' : comment.status === 'pending' && comment.toxicity > 0.8 ? 'border-red-500/30' : ''}`}>
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-bg-surface border border-border-main flex items-center justify-center shrink-0">
-                                            <User className="text-text-dim" size={24} />
+                                        <div className="w-12 h-12 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-dim)] flex items-center justify-center shrink-0 shadow-soft">
+                                            <User className="text-[var(--text-secondary)]" size={24} />
                                         </div>
+
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="font-bold text-lg text-text-primary">{comment.user}</span>
-                                                    <span className="text-xs text-text-secondary">• {comment.timestamp}</span>
+                                                    <span className="font-black uppercase tracking-tight text-lg text-[var(--text-primary)]">{comment.user}</span>
+                                                    <span className="text-[10px] font-black uppercase text-[var(--text-secondary)]">• {comment.timestamp}</span>
                                                 </div>
+
 
                                                 <div className={`px-3 py-1 rounded-full text-xs font-bold border ${getScoreColor(comment.toxicity).replace('text-', 'bg-').replace('500', '500/10')} ${getScoreColor(comment.toxicity)} border-current/10`}>
                                                     AI Score: {(comment.toxicity * 100).toFixed(0)}%
                                                 </div>
                                             </div>
-                                            <p className="text-text-secondary mb-4 leading-relaxed">{comment.text}</p>
+                                            <p className="text-[var(--text-primary)] font-medium mb-4 leading-relaxed">{comment.text}</p>
+
 
 
                                             <div className="flex flex-wrap items-center gap-3">
@@ -138,12 +142,13 @@ const ModerationPanel: React.FC = () => {
                                                         >
                                                             <XCircle size={14} /> Hide
                                                         </GlowButton>
-                                                        <button className="px-4 py-1.5 text-xs rounded-xl border border-white/10 hover:bg-white/5 flex items-center gap-2 transition-all">
+                                                        <button className="px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl border border-[var(--border-dim)] hover:bg-[var(--bg-elevated)] flex items-center gap-2 transition-all text-[var(--text-primary)]">
                                                             <Flag size={14} /> Flag
                                                         </button>
+
                                                     </>
                                                 ) : (
-                                                    <div className={`flex items-center gap-2 text-sm font-medium ${comment.status === 'approved' ? 'text-green-400' : 'text-red-400'}`}>
+                                                    <div className={`flex items-center gap-2 text-sm font-medium ${comment.status === 'approved' ? 'text-green-500' : 'text-red-500'}`}>
                                                         {comment.status === 'approved' ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                                                         Action: {comment.status.charAt(0).toUpperCase() + comment.status.slice(1)}
                                                     </div>
@@ -158,41 +163,43 @@ const ModerationPanel: React.FC = () => {
                 </div>
 
                 <div className="space-y-6">
-                    <GlassCard>
-                        <h3 className="text-xl font-bold font-sora mb-4">AI Insight</h3>
+                    <GlassCard className="border-[var(--border-dim)] bg-[var(--bg-surface)]">
+                        <h3 className="text-xl font-bold font-sora mb-4 text-[var(--text-primary)]">AI Insight</h3>
                         <div className="space-y-4">
-                            <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+                            <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-dim)] shadow-soft group hover:border-[var(--accent-primary)]/50 transition-all cursor-pointer">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <ShieldAlert className="text-primary" size={20} />
-                                    <span className="font-bold text-text-primary">Active Shielding</span>
+                                    <ShieldAlert className="text-[var(--accent-primary)] group-hover:scale-110 transition-transform" size={20} />
+                                    <span className="font-black uppercase tracking-tight text-[var(--text-primary)]">Active Shielding</span>
                                 </div>
-                                <p className="text-sm text-text-secondary">Moderating comments with &gt;85% confidence score automatically.</p>
+                                <p className="text-xs font-medium text-[var(--text-secondary)]">Moderating comments with &gt;85% confidence score automatically.</p>
                             </div>
 
 
-                            <div className="space-y-3 pt-2">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-400">Total Analyzed</span>
-                                    <span className="font-bold">4,281</span>
+
+                             <div className="space-y-4 pt-4 border-t border-[var(--border-dim)]">
+                                <div className="flex justify-between items-end">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)]">Total Analyzed</span>
+                                    <span className="font-black text-[var(--text-primary)]">4,281</span>
                                 </div>
-                                <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-primary-glow h-full w-[70%]" />
+                                <div className="w-full bg-[var(--bg-main)] h-2 rounded-full overflow-hidden border border-[var(--border-dim)]">
+                                    <div className="bg-[var(--accent-primary)] h-full w-[70%] shadow-glow" />
                                 </div>
 
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-400">Auto-Removals</span>
-                                    <span className="font-bold">152</span>
+                                <div className="flex justify-between items-end">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)]">Auto-Removals</span>
+                                    <span className="font-black text-[var(--text-primary)]">152</span>
                                 </div>
-                                <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-red-500 h-full w-[20%]" />
+                                <div className="w-full bg-[var(--bg-main)] h-2 rounded-full overflow-hidden border border-[var(--border-dim)]">
+                                    <div className="bg-red-500 h-full w-[20%] shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
                                 </div>
                             </div>
+
                         </div>
                     </GlassCard>
 
-                    <GlassCard className="bg-gradient-to-br from-primary-accent/20 to-transparent">
-                        <h3 className="text-xl font-bold font-sora mb-2 text-white">Need Help?</h3>
-                        <p className="text-sm text-gray-100 dark:text-gray-200 mb-4 opacity-80">Our AI learns from your manual overrides. Each "Approve" or "Hide" makes the system smarter.</p>
+                    <GlassCard className="bg-[var(--accent-primary)]/10 border-[var(--border-dim)]">
+                        <h3 className="text-xl font-bold font-sora mb-2 text-[var(--text-primary)]">Need Help?</h3>
+                        <p className="text-sm text-[var(--text-secondary)] mb-4 opacity-80">Our AI learns from your manual overrides. Each "Approve" or "Hide" makes the system smarter.</p>
                         <GlowButton variant="primary" className="w-full py-2">Read Documentation</GlowButton>
                     </GlassCard>
                 </div>

@@ -1,128 +1,139 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Youtube, Github, Zap, ShieldCheck, ArrowRight, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User, Calendar, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 import GlowButton from '../components/ui/GlowButton';
+import { AuthContext } from '../context/AuthContext';
+import { db } from '../lib/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
-interface AgentSetupProps {
-  onComplete: () => void;
-}
-
-const AgentSetup = ({ onComplete }: AgentSetupProps) => {
-  const [selected, setSelected] = useState<'github' | 'youtube' | null>(null);
-  const [isConnecting, setIsConnecting] = useState(false);
+const AgentSetup = () => {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const user = auth?.user;
 
-  const handleConnect = async (platform: 'github' | 'youtube') => {
-    setSelected(platform);
-    setIsConnecting(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
     
-    // Simulate API Call
-    // POST /connect-platform { platform: "github" | "youtube", oauthToken: "..." }
-    console.log(`Connecting to ${platform}...`);
-    
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    
-    localStorage.setItem("selectedPlatform", platform);
-    localStorage.setItem("setup", "true");
-    onComplete();
-    navigate("/dashboard");
+    if (!name || !age) {
+        setError("Both identity parameters are required.");
+        return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      await setDoc(doc(db, "users", user.uid), {
+        name,
+        age: parseInt(age, 10),
+        email: user.email,
+        createdAt: new Date().toISOString()
+      }, { merge: true });
+
+      navigate('/app');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to initialize identity core.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-bgLight dark:bg-bgDark text-gray-900 dark:text-white transition-colors duration-500 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0A051A] text-white flex items-center justify-center p-6 relative overflow-hidden" 
+         style={{ backgroundImage: "url('/auth_wallpaper.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-0" />
       
-      {/* Background Ambience */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-primary-glow/5 blur-[120px] rounded-full pointer-events-none" />
+      {/* Cinematic Background Ambient Glows */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none z-0" />
 
-      <div className="max-w-4xl w-full z-10">
-        <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-12"
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-lg z-10"
+      >
+        <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden">
+          
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-[var(--accent-primary)] flex items-center justify-center mx-auto mb-6 shadow-glow">
+              <ShieldCheck size={32} className="text-white" />
+            </div>
+            <h1 className="text-3xl font-black font-sora tracking-tighter uppercase italic text-white mb-2">Initialize Profile</h1>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/50">Register pilot identity to access AetherGuard</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <AnimatePresence mode="wait">
+                {error && (
+                    <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-center gap-3 text-red-500 text-[10px] font-black uppercase tracking-widest"
+                    >
+                        <AlertCircle size={16} />
+                        {error}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-widest text-white/70 ml-4">Full Name</label>
+              <div className="relative">
+                  <User className="absolute left-6 top-1/2 -translate-y-1/2 text-white/50" size={18} />
+                  <input 
+                      type="text" 
+                      placeholder="Jane Doe" 
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full bg-black/20 border border-white/10 rounded-2xl py-5 pl-16 pr-6 focus:outline-none focus:border-[var(--accent-primary)] focus:bg-black/40 transition-all font-black text-[12px] uppercase tracking-widest text-white placeholder:text-white/20 shadow-inner"
+                      required
+                  />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-widest text-white/70 ml-4">Age</label>
+              <div className="relative">
+                  <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-white/50" size={18} />
+                  <input 
+                      type="number" 
+                      placeholder="25" 
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      min="13"
+                      max="120"
+                      className="w-full bg-black/20 border border-white/10 rounded-2xl py-5 pl-16 pr-6 focus:outline-none focus:border-[var(--accent-primary)] focus:bg-black/40 transition-all font-black text-[12px] uppercase tracking-widest text-white placeholder:text-white/20 shadow-inner"
+                      required
+                  />
+              </div>
+            </div>
+
+            <GlowButton 
+                type="submit" 
+                disabled={loading}
+                className="w-full py-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 mt-8"
             >
-              <div className="text-center space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest">
-                    Agent Configuration
-                </div>
-                <h2 className="text-6xl md:text-8xl font-black font-sora tracking-tighter leading-none">
-                  CHOOSE <br /> <span className="text-primary italic">ECOSYSTEM</span>
-                </h2>
-                <p className="text-gray-500 dark:text-gray-400 font-medium text-lg max-w-xl mx-auto uppercase tracking-tighter">Connect your platform to initialize AI moderation agents.</p>
-              </div>
+                {loading ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                    <>
+                        Finalize Synchronization <ArrowRight size={16} />
+                    </>
+                )}
+            </GlowButton>
+          </form>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Option 1: GitHub */}
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className={`p-12 rounded-[2.5rem] border-2 transition-all duration-500 flex flex-col items-center gap-8 group relative overflow-hidden ${
-                    selected === 'github' 
-                    ? "bg-white dark:bg-white/5 border-primary shadow-2xl" 
-                    : "bg-gray-50 dark:bg-white/[0.02] border-gray-200 dark:border-white/5"
-                  }`}
-                >
-                    <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                        <Github size={44} />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="text-3xl font-black font-sora uppercase tracking-tight mb-2">GitHub</h3>
-                        <p className="text-xs font-black uppercase tracking-widest opacity-40 leading-relaxed">Automated issue & PR moderation with AI analysis.</p>
-                    </div>
-                    
-                    <GlowButton 
-                        onClick={() => handleConnect('github')}
-                        disabled={isConnecting}
-                        className="w-full py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest"
-                    >
-                        {isConnecting && selected === 'github' ? 'Syncing...' : 'Connect GitHub'}
-                    </GlowButton>
-                </motion.div>
-
-                {/* Option 2: YouTube */}
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className={`p-12 rounded-[2.5rem] border-2 transition-all duration-500 flex flex-col items-center gap-8 group relative overflow-hidden ${
-                    selected === 'youtube' 
-                    ? "bg-white dark:bg-white/5 border-red-500 shadow-2xl" 
-                    : "bg-gray-50 dark:bg-white/[0.02] border-gray-200 dark:border-white/5"
-                  }`}
-                >
-                    <div className="w-20 h-20 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform">
-                        <Youtube size={44} />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="text-3xl font-black font-sora uppercase tracking-tight mb-2">YouTube</h3>
-                        <p className="text-xs font-black uppercase tracking-widest opacity-40 leading-relaxed">Real-time comment filtering & toxicity detection.</p>
-                    </div>
-
-                    <GlowButton 
-                        onClick={() => handleConnect('youtube')}
-                        disabled={isConnecting}
-                        className="w-full py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                    >
-                        {isConnecting && selected === 'youtube' ? 'Syncing...' : 'Connect YouTube'}
-                    </GlowButton>
-                </motion.div>
-              </div>
-
-              <div className="flex flex-col items-center gap-4 pt-8">
-                  <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gray-500">
-                      <ShieldCheck size={14} className="text-primary-glow" /> 
-                      Secure AES-256 OAuth Connection
-                  </div>
-                  {isConnecting && (
-                      <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="flex items-center gap-2 text-primary-glow text-[10px] font-black uppercase tracking-[0.3em]"
-                      >
-                         <Terminal size={12} className="animate-pulse" /> Finalizing Proxy Handshake...
-                      </motion.div>
-                  )}
-              </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 };

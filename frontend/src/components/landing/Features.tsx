@@ -18,7 +18,8 @@ const features = [
     title: "Cross Platform", 
     icon: Globe,
     desc: "One agent to rule them all. Unified moderation for YouTube and GitHub ecosystems.",
-    color: "from-primary/20 to-transparent"
+    color: "from-[var(--accent-primary)]/20 to-transparent"
+
   }
 ];
 
@@ -27,10 +28,11 @@ export default function Features() {
     <section id="features" className="py-40 px-10 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
-            <h2 className="text-4xl md:text-6xl font-black font-sora tracking-tighter mb-4 text-text-primary">
-                Engineered for <span className="text-primary">Safety</span>
+            <h2 className="text-4xl md:text-6xl font-black font-sora tracking-tighter mb-4 text-[var(--text-primary)]">
+                Engineered for <span className="text-[var(--accent-primary)]">Safety</span>
             </h2>
-            <p className="text-text-secondary font-medium max-w-xl mx-auto text-lg uppercase tracking-tight">Advanced protection for modern digital platforms.</p>
+            <p className="text-[var(--text-secondary)] font-medium max-w-xl mx-auto text-lg uppercase tracking-tight">Advanced protection for modern digital platforms.</p>
+
 
         </div>
 
@@ -43,18 +45,21 @@ export default function Features() {
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -10 }}
               className={`p-10 rounded-[2.5rem] backdrop-blur-xl 
-              bg-bg-surface border border-border-dim
+              bg-[var(--bg-surface)] border border-[var(--border-dim)]
+
               shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group`}
 
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${f.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
               
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 rounded-2xl bg-[var(--accent-primary)]/10 flex items-center justify-center text-[var(--accent-primary)] mb-8 group-hover:scale-110 transition-transform">
+
                 <f.icon size={28} />
               </div>
 
-              <h3 className="text-2xl font-black font-sora mb-4 text-text-primary uppercase tracking-tight">{f.title}</h3>
-              <p className="text-text-secondary font-medium leading-relaxed font-inter">
+              <h3 className="text-2xl font-black font-sora mb-4 text-[var(--text-primary)] uppercase tracking-tight">{f.title}</h3>
+              <p className="text-[var(--text-secondary)] font-medium leading-relaxed font-inter">
+
                 {f.desc}
               </p>
 

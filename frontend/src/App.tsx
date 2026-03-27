@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import MainLayout from './components/layout/MainLayout';
@@ -13,72 +12,29 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import AgentSetup from './pages/AgentSetup';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 
-function App() {
+function AppContent() {
 
-  // ✅ AUTH STATES
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAgentSetupDone, setIsAgentSetupDone] = useState(false);
-
-  // ✅ PERSISTENCE
-  useEffect(() => {
-    const auth = localStorage.getItem("auth");
-    const setup = localStorage.getItem("setup");
-
-    if (auth === "true") setIsAuthenticated(true);
-    if (setup === "true") setIsAgentSetupDone(true);
-  }, []);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem("auth", "true");
-  };
-
-  const handleSetupComplete = () => {
-    setIsAgentSetupDone(true);
-    localStorage.setItem("setup", "true");
-  };
 
   return (
     <Router>
       <div className="min-h-screen transition-colors duration-500">
         <Routes>
-          {/* Landing */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<Login />} />
+          <Route path="/setup" element={
+            <ProtectedRoute>
+              <AgentSetup />
+            </ProtectedRoute>
+          } />
 
-          {/* Auth (Login / Signup) */}
-          <Route
-            path="/auth"
-            element={
-              isAuthenticated
-                ? <Navigate to="/onboarding" />
-                : <Login onLogin={handleLogin} />
-            }
-          />
-
-          {/* Onboarding */}
-          <Route
-            path="/onboarding"
-            element={
-              !isAuthenticated
-                ? <Navigate to="/auth" />
-                : isAgentSetupDone
-                ? <Navigate to="/dashboard" />
-                : <AgentSetup onComplete={handleSetupComplete} />
-            }
-          />
-
-          {/* Dashboard (Post-Login) */}
-          <Route
-            path="/dashboard"
-            element={
-              !isAuthenticated
-                ? <Navigate to="/auth" />
-                : !isAgentSetupDone
-                ? <Navigate to="/onboarding" />
-                : <MainLayout />
-            }
-          >
+          <Route path="/app" element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }>
             <Route index element={<Dashboard />} />
             <Route path="analyze" element={<Analyze />} />
             <Route path="moderation" element={<ModerationPanel />} />
@@ -89,11 +45,18 @@ function App() {
             <Route path="settings" element={<Settings />} />
           </Route>
 
-          {/* Catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </Router>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

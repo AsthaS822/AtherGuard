@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LandingNavbar from '../components/landing/Navbar';
+import { AuthContext } from '../context/AuthContext';
+
 import Hero from '../components/landing/Hero';
 import VideoSection from '../components/landing/VideoSection';
 import Features from '../components/landing/Features';
 
 const LandingPage: React.FC = () => {
+    const navigate = useNavigate();
+    const auth = useContext(AuthContext);
+    const isAuthenticated = !!auth?.user;
+
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/app");
+        }
+    }, [isAuthenticated, navigate]);
+
     return (
         <main className="bg-bg-main text-text-primary transition-colors duration-500 overflow-x-hidden">
             <LandingNavbar />
@@ -20,9 +33,13 @@ const LandingPage: React.FC = () => {
                         START <span className="text-primary italic">SHIELDING</span>
                     </h2>
                     <p className="text-xl text-text-secondary mb-12 max-w-xl mx-auto font-medium">Protect your community with AetherGuard AI today.</p>
-                    <button className="px-16 py-6 rounded-3xl bg-primary text-white font-black tracking-widest uppercase shadow-[0_20px_40px_-10px_rgba(124,58,237,0.5)] hover:scale-105 transition-all">
-                        Launch Agent Now
+                    <button 
+                        onClick={() => navigate(isAuthenticated ? '/app' : '/auth')}
+                        className="px-16 py-6 rounded-3xl bg-primary text-[var(--text-secondary)] font-black tracking-widest uppercase shadow-[0_20px_40px_-10px_rgba(124,58,237,0.5)] hover:scale-105 transition-all"
+                    >
+                        {isAuthenticated ? 'Go to Dashboard' : 'Launch Agent Now'}
                     </button>
+
                 </div>
             </section>
 

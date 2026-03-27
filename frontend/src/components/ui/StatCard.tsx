@@ -18,7 +18,7 @@ const StatCard = ({ title, value, icon, trend, description, className }: StatCar
   return (
     <GlassCard className={className}>
       <div className="flex justify-between items-start mb-4">
-        <div className="p-3 bg-primary/10 rounded-xl text-primary">
+        <div className="p-3 bg-[var(--accent-primary)]/10 rounded-xl text-[var(--accent-primary)]">
           {icon}
         </div>
         {trend && (
@@ -29,13 +29,12 @@ const StatCard = ({ title, value, icon, trend, description, className }: StatCar
         )}
       </div>
       <div>
-        <h3 className="text-text-secondary text-sm font-medium mb-1">{title}</h3>
-        <p className="text-2xl font-bold font-sora text-text-primary">{value}</p>
-        {description && <p className="text-text-dim text-xs mt-2">{description}</p>}
+        <h3 className="text-[var(--text-secondary)] text-sm font-medium mb-1">{title}</h3>
+        <p className="text-2xl font-bold font-sora text-[var(--text-primary)]">{value}</p>
+        {description && <p className="text-[var(--text-secondary)] text-xs mt-2">{description}</p>}
       </div>
     </GlassCard>
   );
 };
-
 
 export default StatCard;

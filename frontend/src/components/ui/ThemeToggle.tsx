@@ -1,35 +1,28 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon } from 'lucide-react';
-import { useTheme } from '../../hooks/useTheme';
+import { Sun, Moon } from "lucide-react";
+import { motion } from "framer-motion";
+import { useTheme } from "../../hooks/useTheme";
 
-export const ThemeToggle: React.FC = () => {
+export const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative p-2 rounded-xl bg-bg-surface border border-border-main hover:border-primary/50 transition-colors shadow-sm group overflow-hidden"
+      className="relative w-14 h-8 rounded-full bg-surface border border-border shadow-soft flex items-center px-1 transition-colors"
       aria-label="Toggle Theme"
     >
-      <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-      
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={theme}
-          initial={{ y: 20, opacity: 0, rotate: -45 }}
-          animate={{ y: 0, opacity: 1, rotate: 0 }}
-          exit={{ y: -20, opacity: 0, rotate: 45 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="relative z-10"
-        >
-          {theme === 'dark' ? (
-            <Sun className="w-5 h-5 text-accent group-hover:text-primary transition-colors" />
-          ) : (
-            <Moon className="w-5 h-5 text-primary" />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        layout
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center shadow-lg"
+      >
+        {theme === "dark" ? (
+          <Moon size={14} className="text-white" />
+        ) : (
+          <Sun size={14} className="text-white" />
+        )}
+      </motion.div>
     </button>
   );
 };
+

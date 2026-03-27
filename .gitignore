@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+serviceAccountKey.json
+*.log
+.DS_Store
+.vscode/
+.idea/
+.gemini/
+*.tmp
+/tmp
+package-lock.json
+/frontend/node_modules
+/server/node_modules
+/frontend/dist
+/server/dist

@@ -4,75 +4,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🌞 LIGHT THEME (DEFAULT) */
+:root {
+  --bg-main: #f8fafc;
+  --bg-surface: rgba(255, 255, 255, 0.7);
+  --bg-elevated: #ffffff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+
+  --border-dim: rgba(0, 0, 0, 0.06);
+
+  --accent-primary: #7c3aed;
+  --accent-glow: #6366f1;
+
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 20px 60px rgba(124, 58, 237, 0.15);
+}
+
+/* 🌙 DARK THEME */
+.dark {
+  --bg-main: #070b14;
+  --bg-surface: rgba(255, 255, 255, 0.05);
+  --bg-elevated: #0b0f19;
+
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+
+  --border-dim: rgba(255, 255, 255, 0.08);
+
+  --accent-primary: #7c3aed;
+  --accent-glow: #00f5ff;
+
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(124, 58, 237, 0.6);
+}
+
+
 @layer base {
-  :root {
-    --bg-main: #F8FAFC;
-    --bg-surface: #FFFFFF;
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-dim: #94A3B8;
-    --border-main: rgba(0, 0, 0, 0.08);
-    --border-dim: rgba(0, 0, 0, 0.04);
-    --primary: #7C3AED;
-    --primary-glow: rgba(124, 58, 237, 0.3);
-    --accent: #00F5FF;
-    --accent-glow: rgba(0, 245, 255, 0.3);
-    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.5);
-  }
-
-  .dark {
-    --bg-main: #070B14;
-    --bg-surface: #0B0F19;
-    --text-primary: #F1F5F9;
-    --text-secondary: #94A3B8;
-    --text-dim: #64748B;
-    --border-main: rgba(255, 255, 255, 0.1);
-    --border-dim: rgba(255, 255, 255, 0.05);
-    --primary: #7C3AED;
-    --primary-glow: rgba(124, 58, 237, 0.4);
-    --accent: #00F5FF;
-    --accent-glow: rgba(0, 245, 255, 0.4);
-    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    --glass-bg: rgba(15, 23, 42, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.08);
-  }
-
   body {
-    @apply font-inter antialiased transition-colors duration-300;
-    background-color: var(--bg-main);
+    background: var(--bg-main);
     color: var(--text-primary);
-    min-height: 100vh;
+    transition: all 0.4s ease;
+    @apply font-inter antialiased min-h-screen;
+  }
+
+  /* smooth transitions globally */
+  * {
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
   }
 
   .glass-card {
     @apply backdrop-blur-xl transition-all duration-300;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--card-shadow);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-dim);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .glass-card:hover {
+    box-shadow: var(--shadow-glow);
   }
 
   .glow-button-primary {
-    @apply bg-primary text-white font-bold py-3 px-8 rounded-xl transition-all duration-300;
-    box-shadow: 0 0 20px var(--primary-glow);
+    @apply bg-[var(--accent-primary)] text-white font-bold py-3 px-8 rounded-xl transition-all duration-300;
+    box-shadow: var(--shadow-glow);
   }
 
   .glow-button-primary:hover {
     @apply scale-[1.02];
-    box-shadow: 0 0 30px var(--primary-glow);
   }
 
   .glow-button-secondary {
-    @apply bg-bg-surface text-text-primary border border-border-main font-bold py-3 px-8 rounded-xl transition-all duration-300;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-dim);
+    @apply font-bold py-3 px-8 rounded-xl transition-all duration-300;
   }
 
   .glow-button-secondary:hover {
-    @apply bg-bg-main scale-[1.02];
-    border-color: var(--primary-glow);
+    background: var(--bg-main);
+    @apply scale-[1.02];
+    border-color: var(--accent-glow);
   }
 
+
 }
+
 
 
 

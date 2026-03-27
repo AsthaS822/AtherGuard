@@ -22,32 +22,37 @@ const Table = <T extends { id: string | number }>({
   return (
     <div className={`overflow-x-auto ${className}`}>
       <table className="w-full text-left border-collapse">
-        <thead className="bg-bg-surface/50 border-b border-border-dim">
+        <thead className="bg-surface border-b border-border">
+
 
           <tr>
             {columns.map((column, index) => (
               <th 
                 key={index} 
-                className={`px-4 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider ${column.className}`}
+                className={`px-4 py-4 text-[10px] font-black text-muted uppercase tracking-[0.2em] ${column.className}`}
               >
+
 
                 {column.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-border-dim">
+        <tbody className="divide-y divide-border">
+
 
           {data.length > 0 ? (
             data.map((item) => (
               <tr 
                 key={item.id}
                 onClick={() => onRowClick?.(item)}
-                className={`transition-colors duration-200 ${onRowClick ? 'cursor-pointer hover:bg-bg-surface/50' : ''}`}
+                className={`transition-colors duration-200 ${onRowClick ? 'cursor-pointer hover:bg-surface' : ''}`}
+
 
               >
                 {columns.map((column, index) => (
-                  <td key={index} className={`px-4 py-4 text-sm text-text-primary ${column.className}`}>
+                  <td key={index} className={`px-4 py-4 text-sm text-text ${column.className}`}>
+
 
                     {typeof column.accessor === 'function' 
                       ? column.accessor(item) 

@@ -14,15 +14,17 @@ interface TabsProps {
 
 const Tabs = ({ tabs, activeTab, onChange, className }: TabsProps) => {
   return (
-    <div className={`flex space-x-1 p-1 bg-bg-surface/50 rounded-xl border border-border-dim ${className}`}>
+    <div className={`flex space-x-1 p-1 bg-surface rounded-xl border border-border ${className}`}>
+
 
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onChange(tab.id)}
-          className={`relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-lg ${
-            activeTab === tab.id ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+          className={`relative px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-colors duration-300 rounded-lg ${
+            activeTab === tab.id ? 'text-text' : 'text-muted hover:text-text'
           }`}
+
 
         >
           {activeTab === tab.id && (

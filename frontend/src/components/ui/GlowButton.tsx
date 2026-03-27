@@ -27,8 +27,9 @@ const GlowButton = ({
       className={cn(
         variant === 'primary' ? 'glow-button-primary' : 
         variant === 'secondary' ? 'glow-button-secondary' : 
-        variant === 'outline' ? 'border border-border-main hover:border-primary/50 text-text-secondary hover:text-text-primary px-6 py-2.5 rounded-xl bg-bg-surface/50' :
-        'bg-accent text-black font-bold shadow-neon hover:shadow-[0_0_30px_rgba(0,245,255,0.6)] py-3 px-8 rounded-xl',
+        variant === 'outline' ? 'border border-[var(--border-dim)] hover:border-[var(--accent-primary)]/50 text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-6 py-2.5 rounded-xl bg-[var(--bg-surface)]' :
+        'bg-[var(--accent-primary)] text-white font-bold shadow-neon hover:shadow-[var(--shadow-glow)] py-3 px-8 rounded-xl',
+
         className
       )}
 

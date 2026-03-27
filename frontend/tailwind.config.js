@@ -12,33 +12,23 @@ export default {
         sora: ["Sora", "sans-serif"],
       },
       colors: {
-        bg: {
-          main: "var(--bg-main)",
-          surface: "var(--bg-surface)",
-        },
-        text: {
-          primary: "var(--text-primary)",
-          secondary: "var(--text-secondary)",
-          dim: "var(--text-dim)",
-        },
-        border: {
-          main: "var(--border-main)",
-          dim: "var(--border-dim)",
-        },
-        primary: {
-          DEFAULT: "var(--primary)",
-          glow: "var(--primary-glow)",
-        },
-        accent: {
-          DEFAULT: "var(--accent)",
-          glow: "var(--accent-glow)",
-        },
+        bg: "var(--bg-main)",
+        surface: "var(--bg-surface)",
+        elevated: "var(--bg-elevated)",
+
+        primary: "var(--primary)",
+        glow: "var(--primary-glow)",
+
+        text: "var(--text-primary)",
+        muted: "var(--text-secondary)",
+
+        border: "var(--border-dim)",
+      },
+      boxShadow: {
+        soft: "var(--shadow-soft)",
+        glow: "var(--shadow-glow)",
       },
 
-      boxShadow: {
-        glow: "0 0 30px rgba(124,58,237,0.4)",
-        neon: "0 0 20px rgba(0,245,255,0.5)"
-      },
       backdropBlur: {
         xl: "20px"
       },
