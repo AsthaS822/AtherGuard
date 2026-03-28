@@ -33,14 +33,14 @@ export default function Hero() {
 
 
         <h1 className="text-6xl md:text-9xl font-black font-sora leading-[0.9] tracking-tighter mb-8 text-[var(--text-primary)] uppercase italic">
-          Neural <br />
+          Shield your <br />
           <span className="bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-transparent">
-            Shielding
+            Platform with AI
           </span>
         </h1>
 
-        <p className="mt-8 text-[var(--text-secondary)] max-w-2xl mx-auto text-xl font-medium leading-relaxed font-inter uppercase tracking-tighter">
-          Synchronize your community with AetherGuard. Artificial intelligence patrolling your digital borders across YouTube & GitHub.
+        <p className="mt-8 text-[var(--text-secondary)] max-w-3xl mx-auto text-xl font-medium leading-relaxed font-inter uppercase tracking-tighter">
+          Effortless Content Moderation for a Safer Space! Artificial intelligence patrolling your digital borders across YouTube & GitHub.
         </p>
 
 
@@ -50,17 +50,8 @@ export default function Hero() {
             onClick={() => navigate('/auth')}
             className="px-12 py-5 rounded-[2rem] bg-[var(--accent-primary)] text-white font-black tracking-widest uppercase text-sm shadow-[0_15px_40px_-10px_rgba(124,58,237,0.5)] hover:scale-105 transition-all flex items-center gap-3"
           >
-            Get Started <ArrowRight size={18} />
+            Launch Agent Now <ArrowRight size={18} />
           </button>
-          <button
-            onClick={() => navigate('/auth')}
-            className="px-12 py-5 rounded-[2rem] border border-[var(--border-dim)] hover:bg-[var(--bg-surface)] transition-all text-sm font-black tracking-widest uppercase flex items-center gap-3 text-[var(--text-primary)]"
-          >
-            <Play size={18} className="fill-current" /> Live Demo
-          </button>
-
-
-
         </div>
       </motion.div>
 
