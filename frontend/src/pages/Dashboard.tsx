@@ -18,9 +18,11 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { useProfile } from '../hooks/useProfile';
 import { motion } from 'framer-motion';
 
 const data = [
+  // ... (keeping existing data)
   { name: 'Mon', total: 4000, toxic: 240 },
   { name: 'Tue', total: 3000, toxic: 139 },
   { name: 'Wed', total: 2000, toxic: 980 },
@@ -34,6 +36,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { stats, recentLogs } = useAnalytics();
+  const { profile } = useProfile();
 
   // Fallback for empty/initial stats
   const currentStats = stats || {
@@ -73,7 +76,9 @@ const Dashboard = () => {
           <h1 className="text-4xl md:text-5xl font-black font-sora text-[var(--text-primary)] tracking-tighter uppercase italic">
             Command <span className="text-[var(--accent-primary)]">Center</span>
           </h1>
-          <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm">Welcome back. Neural systems are 100% operational.</p>
+          <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm">
+            Welcome back, {profile?.name || 'Agent'}. Neural systems are 100% operational.
+          </p>
         </div>
 
         <GlowButton 
