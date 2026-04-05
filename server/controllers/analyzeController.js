@@ -3,7 +3,9 @@ const {
   classify, 
   classifyGithubIssue, 
   getGithubAction, 
-  getAction 
+  getAction,
+  suggestImprovement,
+  detectLanguage
 } = require("../utils/classifier");
 const { detectPlatform } = require("../utils/detectPlatform");
 const { fetchGithubData } = require("../services/githubService");
@@ -51,7 +53,7 @@ exports.getLogs = async (req, res) => {
 // Analysis engine
 exports.analyze = async (req, res) => {
   try {
-    const { url, customWords = [] } = req.body;
+    const { url, customWords = [], strictMode = false } = req.body;
     const userId = req.user.uid;
 
     const platform = detectPlatform(url);
@@ -89,6 +91,7 @@ exports.analyze = async (req, res) => {
 
       const cleaned = cleanText(item.text);
       const ai = await analyzeText(cleaned);
+      const lang = detectLanguage(item.text);
 
       let label, actionData;
 
@@ -98,16 +101,20 @@ exports.analyze = async (req, res) => {
         actionData = { action: githubAction.action, ...githubAction };
       } else {
         label = classify(cleaned, ai, customWords);
-        actionData = { action: getAction(label) };
+        actionData = { action: getAction(label, strictMode) };
       }
+
+      const suggestion = suggestImprovement(cleaned, label);
 
       analyzed.push({
         text: item.text,
         author: item.author,
-        date: item.date,
+        date: item.date || new Date().toISOString(),
+        language: lang,
         moderation: {
           score: Math.max(ai.toxicity || 0, ai.insult || 0, ai.threat || 0),
           label,
+          suggestion,
           ...actionData
         }
       });
@@ -121,6 +128,28 @@ exports.analyze = async (req, res) => {
       threat: analyzed.filter(i => i.moderation.label === "threat").length,
       suspicious: analyzed.filter(i => i.moderation.label === "suspicious").length,
       safe: analyzed.filter(i => ["safe", "normal", "valid"].includes(i.moderation.label)).length
+    };
+
+    const getTrends = (items) => {
+      const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      let trend = {};
+
+      items.forEach(i => {
+        const d = new Date(i.date);
+        const day = days[d.getDay()];
+
+        if (!trend[day]) trend[day] = 0;
+        if (i.moderation.label === "toxic") trend[day]++;
+      });
+
+      return trend;
+    };
+
+    summary.safetyRate = summary.total > 0 ? (summary.safe / summary.total) * 100 : 100;
+    summary.trend = getTrends(analyzed);
+    summary.platformStats = {
+      youtube: platform === "youtube" ? { safe: summary.safe, toxic: summary.toxic } : { safe: 0, toxic: 0 },
+      github: platform === "github" ? { safe: summary.safe, toxic: summary.toxic } : { safe: 0, toxic: 0 }
     };
 
     // Database updates

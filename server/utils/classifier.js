@@ -1,3 +1,14 @@
+const franc = require("franc");
+
+const detectLanguage = (text) => {
+  const lang = franc(text);
+
+  if (lang === "eng") return "english";
+  if (lang === "hin") return "hindi";
+
+  return "hinglish"; // fallback
+};
+
 // Clean text
 const cleanText = (text) => {
   return text
@@ -37,15 +48,38 @@ const isGithubSpam = (text) => {
 const classify = (text, ai, customWords = []) => {
   const lower = text.toLowerCase();
 
-  if (isSpam(lower)) return "spam";
+  // 1. Custom user-defined words
   if (customWords.some(word => lower.includes(word.toLowerCase()))) {
     return "flagged";
   }
 
-  if (ai.threat > 0.7) return "threat";
-  if (ai.toxicity > 0.75) return "toxic";
-  if (ai.insult > 0.6) return "abusive";
-  if (ai.toxicity > 0.4) return "suspicious";
+  const bannedPatterns = customWords.map(w => new RegExp(w, "i"));
+  if (bannedPatterns.some(p => p.test(lower))) {
+    return "spam";
+  }
+
+  // 2. Strong rule-based abusive detection
+  const abusivePatterns = [
+    /dumb/i,
+    /stupid/i,
+    /hypocrite/i,
+    /nepo/i,
+    /flop actor/i,
+    /irritating/i
+  ];
+
+  if (abusivePatterns.some(p => p.test(lower))) {
+    if (ai.toxicity < 0.8) return "abusive"; 
+  }
+
+  // 3. Spam detection
+  if (isSpam(lower)) return "spam";
+
+  // 4. AI thresholds (fine-tuned)
+  if (ai.threat > 0.65) return "threat";
+  if (ai.toxicity > 0.7) return "toxic";
+  if (ai.insult > 0.55) return "abusive";
+  if (ai.toxicity > 0.35) return "suspicious";
 
   return "safe";
 };
@@ -73,7 +107,11 @@ const classifyGithubComment = (text, ai) => {
 };
 
 // Actions for YouTube
-const getAction = (label) => {
+const getAction = (label, strictMode = false) => {
+  if (strictMode && ["suspicious", "abusive"].includes(label)) {
+    return "block";
+  }
+
   const actionMap = {
     toxic: "block",
     threat: "block",
@@ -105,7 +143,28 @@ const getGithubAction = (label) => {
   }
 };
 
+const suggestImprovement = (text, label) => {
+  if (label === "low_quality") {
+    return "Please add steps to reproduce, expected behavior, and screenshots.";
+  }
+
+  if (label === "bug") {
+    return "Include error logs, environment details, and steps to reproduce.";
+  }
+
+  if (label === "feature_request") {
+    return "Describe the feature clearly with use cases and expected impact.";
+  }
+
+  if (label === "needs_attention") {
+    return "Mark priority level and explain urgency.";
+  }
+
+  return null;
+};
+
 module.exports = {
+  detectLanguage,
   cleanText,
   isSpam,
   isGithubSpam,
@@ -113,5 +172,6 @@ module.exports = {
   classifyGithubIssue,
   classifyGithubComment,
   getAction,
-  getGithubAction
+  getGithubAction,
+  suggestImprovement
 };
