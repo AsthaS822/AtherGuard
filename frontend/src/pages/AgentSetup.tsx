@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Calendar, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
+import { User, Calendar, ArrowRight, ShieldCheck, AlertCircle, ArrowLeft } from 'lucide-react';
 import GlowButton from '../components/ui/GlowButton';
 import { AuthContext } from '../context/AuthContext';
 import { db } from '../lib/firebase';
@@ -51,7 +51,7 @@ const AgentSetup = () => {
          style={{ backgroundImage: "url('/auth_wallpaper.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-0" />
       
-      {/* Cinematic Background Ambient Glows */}
+      {/* Background elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none z-0" />
 
@@ -62,6 +62,13 @@ const AgentSetup = () => {
       >
         <div className="bg-white/5 border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden">
           
+          <button 
+            onClick={() => navigate('/')}
+            className="absolute top-8 left-8 text-white/50 hover:text-white transition-colors flex items-center gap-2 text-[10px] font-black uppercase tracking-widest"
+          >
+            <ArrowLeft size={16} /> Back
+          </button>
+
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl bg-[var(--accent-primary)] flex items-center justify-center mx-auto mb-6 shadow-glow">
               <ShieldCheck size={32} className="text-white" />

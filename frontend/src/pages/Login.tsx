@@ -91,7 +91,7 @@ const Login: React.FC = () => {
         <BackButton label="Back to Landing" />
       </div>
 
-      {/* Cinematic Background Ambient Glows */}
+      {/* Background elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full pointer-events-none z-0" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none z-0" />
 
@@ -105,7 +105,7 @@ const Login: React.FC = () => {
                 <Shield size={28} className="text-white" />
             </div>
             <h1 className="text-4xl font-black font-sora tracking-tighter mb-2 uppercase italic">
-                Nexus <span className="text-[var(--accent-primary)]">Auth</span>
+                <span className="text-white">Nexus</span> <span className="text-[var(--accent-primary)]">Auth</span>
             </h1>
             <p className="text-[var(--text-secondary)] font-black uppercase tracking-[0.3em] text-[9px] opacity-60">Secure Gateway to AetherGuard Intelligence</p>
         </div>

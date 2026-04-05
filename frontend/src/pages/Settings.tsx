@@ -12,7 +12,7 @@ const Settings = () => {
         <h1 className="text-4xl md:text-5xl font-black font-sora text-[var(--text-primary)] tracking-tighter uppercase italic">
             <span className="opacity-30">System</span> <span className="text-[var(--accent-primary)]">Settings</span>
         </h1>
-        <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm">Configure your AI agent's behavior and portal preferences.</p>
+        <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm">Configure how the system behaves and your portal preferences.</p>
       </div>
 
 
@@ -24,8 +24,8 @@ const Settings = () => {
               <Sliders className="text-white" size={24} />
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-tight text-[var(--text-primary)]">AI Moderation Pulse</h3>
-              <p className="text-xs text-[var(--text-secondary)] font-bold uppercase tracking-widest">Adjust the aggressiveness of toxicity detection</p>
+              <h3 className="text-xl font-black uppercase tracking-tight text-[var(--text-primary)]">Scan Sensitivity</h3>
+              <p className="text-xs text-[var(--text-secondary)] font-bold uppercase tracking-widest">Adjust how strictly toxicity is detected</p>
             </div>
           </div>
 

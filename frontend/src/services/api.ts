@@ -19,3 +19,19 @@ export const callAPI = async (endpoint: string, data: any) => {
 
   return res.json();
 };
+
+export const callAPIGet = async (endpoint: string) => {
+  const user = auth.currentUser;
+  if (!user) throw new Error("Not authenticated");
+
+  const token = await user.getIdToken();
+
+  const res = await fetch(`${API_URL}${endpoint}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return res.json();
+};

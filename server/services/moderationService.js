@@ -9,6 +9,7 @@ exports.analyzeText = async (text) => {
         requestedAttributes: {
           TOXICITY: {},
           INSULT: {},
+          THREAT: {},
           SPAM: {}
         }
       }
@@ -19,6 +20,7 @@ exports.analyzeText = async (text) => {
     return {
       toxicity: scores.TOXICITY?.summaryScore?.value || 0,
       insult: scores.INSULT?.summaryScore?.value || 0,
+      threat: scores.THREAT?.summaryScore?.value || 0,
       spam: scores.SPAM?.summaryScore?.value || 0
     };
   } catch (err) {

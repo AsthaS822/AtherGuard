@@ -6,8 +6,9 @@ import { ShieldCheck, Target, Zap } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function VideoSection() {
-  const ref = useRef(null);
-  const containerRef = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -20,8 +21,10 @@ export default function VideoSection() {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 80%",
-            end: "top 20%",
+            end: "bottom 20%",
             scrub: 1,
+            onEnter: () => videoRef.current?.play(),
+            onEnterBack: () => videoRef.current?.play(),
           }
         }
       );
@@ -36,8 +39,8 @@ export default function VideoSection() {
       {/* VIDEO */}
       <div ref={ref} className="w-full h-full absolute inset-0 z-0">
         <video
+          ref={videoRef}
           src="/videos/purplepaintsplash.mp4"
-          autoPlay
           loop
           muted
           playsInline

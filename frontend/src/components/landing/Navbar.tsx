@@ -14,13 +14,14 @@ export default function LandingNavbar() {
 
 
 
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[var(--accent-primary)] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.5)]">
+      <div 
+        className="flex items-center gap-3 cursor-pointer group"
+        onClick={() => navigate('/')}
+      >
+        <div className="w-8 h-8 rounded-lg bg-[var(--accent-primary)] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.5)] group-hover:scale-110 transition-transform">
             <div className="w-4 h-4 rounded-full border-2 border-white" />
         </div>
         <h1 className="text-xl font-black font-sora tracking-tighter text-[var(--text-primary)]">AetherGuard</h1>
-
-
       </div>
 
       <div className="flex items-center gap-6">

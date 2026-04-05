@@ -28,7 +28,7 @@ const CustomFilters = () => {
         <h1 className="text-4xl md:text-5xl font-black font-sora text-[var(--text-primary)] tracking-tighter uppercase italic">
             Neural <span className="text-[var(--accent-primary)]">Filters</span>
         </h1>
-        <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm">Define banned patterns and enable strict moderation protocols.</p>
+        <p className="text-[var(--text-secondary)] font-medium uppercase tracking-tight text-sm">Block specific words and set your moderation rules.</p>
       </div>
 
 
@@ -42,8 +42,8 @@ const CustomFilters = () => {
                         <Shield size={32} />
                     </div>
                     <div>
-                        <h3 className="text-2xl font-black font-sora uppercase tracking-tight text-[var(--text-primary)]">Vanguard Strict Mode</h3>
-                        <p className="text-xs text-[var(--text-secondary)] font-bold uppercase tracking-widest mt-1">AI Agent will automatically flag all questionable content without human oversight.</p>
+                        <h3 className="text-2xl font-black font-sora uppercase tracking-tight text-[var(--text-primary)]">Strict Shielding</h3>
+                        <p className="text-xs text-[var(--text-secondary)] font-bold uppercase tracking-widest mt-1">Automatically block all suspicious content without manual review.</p>
                     </div>
                 </div>
                 <div 
@@ -66,8 +66,8 @@ const CustomFilters = () => {
               <Ban size={24} />
             </div>
             <div>
-              <h3 className="text-xl font-black font-sora uppercase tracking-tight text-[var(--text-primary)]">Manual Pattern Blacklist</h3>
-              <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-widest">Static keywords the AI will always incinerate.</p>
+              <h3 className="text-xl font-black font-sora uppercase tracking-tight text-[var(--text-primary)]">Banned Keywords</h3>
+              <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-widest">Words that will always be flaged by the system.</p>
             </div>
           </div>
 
@@ -114,8 +114,8 @@ const CustomFilters = () => {
                 <Languages size={24} />
                 </div>
                 <div>
-                <h3 className="text-xl font-black font-sora uppercase tracking-tight text-[var(--text-primary)]">Linguistic Focus</h3>
-                <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-widest">Filter specific language types.</p>
+                 <h3 className="text-xl font-black font-sora uppercase tracking-tight text-[var(--text-primary)]">Language</h3>
+                 <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-widest">Select which languages to monitor.</p>
                 </div>
             </div>
 
